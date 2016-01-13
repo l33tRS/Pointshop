@@ -1,0 +1,16 @@
+ITEM.Name = 'SAMPLE TEXT'
+ITEM.Price = 228
+ITEM.Model = 'model.mdl'
+ITEM.WeaponClass = 'model'
+ITEM.SingleUse = false
+
+function ITEM:OnEquip(ply)
+    if ply:Team() == TEAM_PROPS then return end
+    ply:Give(self.WeaponClass)
+	ply:SelectWeapon(self.WeaponClass)
+end
+
+function ITEM:OnHolster(ply)
+    if ply:Team() == TEAM_PROPS then return end
+    ply:StripWeapon(self.WeaponClass)
+end

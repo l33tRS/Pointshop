@@ -1,49 +1,50 @@
-surface.CreateFont('PS_Heading', { font = 'coolvetica', size = 64 })
-surface.CreateFont('PS_Heading2', { font = 'coolvetica', size = 24 })
-surface.CreateFont('PS_Heading3', { font = 'coolvetica', size = 19 })
+surface.CreateFont('PS_Heading', { font = 'Default', size = 64 })
+surface.CreateFont('PS_Heading2', { font = 'Default', size = 24 })
+surface.CreateFont('PS_Heading3', { font = 'Default', size = 19 })
 
 surface.CreateFont( "PS_Default", {
-	font = system.IsLinux() and "Arial" or "Tahoma",
+	font = "Default",
 	size = 13, weight = 500, antialias = true,
 })
 
 surface.CreateFont( "PS_DefaultBold", {
-	font = system.IsLinux() and "Arial" or "Tahoma",
+	font = "Default",
 	size = 13, weight = 800, antialias = true,
 })
 
 surface.CreateFont( "PS_Heading1", {
-	font = system.IsLinux() and "Arial" or "Tahoma",
+	font = "Default",
 	size = 18, weight = 500, antialias = true,
 })
 
 surface.CreateFont( "PS_Heading1Bold", {
-	font = system.IsLinux() and "Arial" or "Tahoma",
+	font = "Default",
 	size = 18, weight = 800, antialias = true,
 })
 
 surface.CreateFont( "PS_ButtonText1", {
-	font = "Roboto",
+	font = "Default",
 	size = 22, weight = 700, antialias = true,
 })
 
 surface.CreateFont( "PS_ItemText", {
-	font = system.IsLinux() and "Arial" or "Tahoma",
+	font = "Default",
 	size = 11, weight = 500, antialias = true,
 })
 
 surface.CreateFont( "PS_LargeTitle", {
-	font = "Roboto",
+	font = "Default",
 	size = 32, weight = 500, antialias = true,
 })
+
 
 local ALL_ITEMS = 1
 local OWNED_ITEMS = 2
 local UNOWNED_ITEMS = 3
 
-local BGColor1 = Color(52, 73, 94)
+local BGColor1 = Color(150, 0, 0)
 local BGColor2 = Color(40, 40, 40)
-local BGColor3 = Color(57, 56, 54)
+local BGColor3 = Color(70, 0, 0)
 
 local function BuildItemMenu(menu, ply, itemstype, callback)
 	local plyitems = ply:PS_GetItems()
@@ -273,19 +274,19 @@ function PANEL:Init()
 		ClientsList:Dock(FILL)
 		
 		ClientsList:SetMultiSelect(false)
-		ClientsList:AddColumn('Name')
-		ClientsList:AddColumn('Points'):SetFixedWidth(60)
-		ClientsList:AddColumn('Items'):SetFixedWidth(60)
+		ClientsList:AddColumn('Имя')
+		ClientsList:AddColumn('Поинты'):SetFixedWidth(60)
+		ClientsList:AddColumn('Вещи'):SetFixedWidth(60)
 		
 		ClientsList.OnClickLine = function(parent, line, selected)
 			local ply = line.Player
 			
 			local menu = DermaMenu()
 			
-			menu:AddOption('Set '..PS.Config.PointsName..'...', function()
+			menu:AddOption('Сделать очки...', function()
 				Derma_StringRequest(
-					"Set "..PS.Config.PointsName.." for " .. ply:GetName(),
-					"Set "..PS.Config.PointsName.." to...",
+					"Сделать очки для " .. ply:GetName(),
+					"Сделать очки...",
 					"",
 					function(str)
 						if not str or not tonumber(str) then return end
@@ -298,10 +299,10 @@ function PANEL:Init()
 				)
 			end)
 			
-			menu:AddOption('Give '..PS.Config.PointsName..'...', function()
+			menu:AddOption('Дать очки...', function()
 				Derma_StringRequest(
-					"Give "..PS.Config.PointsName.." to " .. ply:GetName(),
-					"Give "..PS.Config.PointsName.."...",
+					"Дать очки " .. ply:GetName(),
+					"Дать очки...",
 					"",
 					function(str)
 						if not str or not tonumber(str) then return end
@@ -314,10 +315,10 @@ function PANEL:Init()
 				)
 			end)
 			
-			menu:AddOption('Take '..PS.Config.PointsName..'...', function()
+			menu:AddOption('Взять очки...', function()
 				Derma_StringRequest(
-					"Take "..PS.Config.PointsName.." from " .. ply:GetName(),
-					"Take "..PS.Config.PointsName.."...",
+					"Взять очки у " .. ply:GetName(),
+					"Взять очки...",
 					"",
 					function(str)
 						if not str or not tonumber(str) then return end
@@ -332,14 +333,14 @@ function PANEL:Init()
 			
 			menu:AddSpacer()
 			
-			BuildItemMenu(menu:AddSubMenu('Give Item'), ply, UNOWNED_ITEMS, function(item_id)
+			BuildItemMenu(menu:AddSubMenu('Дать вещь'), ply, UNOWNED_ITEMS, function(item_id)
 				net.Start('PS_GiveItem')
 					net.WriteEntity(ply)
 					net.WriteString(item_id)
 				net.SendToServer()
 			end)
 			
-			BuildItemMenu(menu:AddSubMenu('Take Item'), ply, OWNED_ITEMS, function(item_id)
+			BuildItemMenu(menu:AddSubMenu('Взять вещь'), ply, OWNED_ITEMS, function(item_id)
 				net.Start('PS_TakeItem')
 					net.WriteEntity(ply)
 					net.WriteString(item_id)
@@ -351,7 +352,7 @@ function PANEL:Init()
 		
 		self.ClientsList = ClientsList
 
-		createBtn("Admin", 'icon16/shield.png', AdminTab, RIGHT)
+		createBtn("Админ", 'icon16/shield.png', AdminTab, RIGHT)
 	end
 	
 	-- preview panel
@@ -403,7 +404,7 @@ function PANEL:Init()
 	
 	if PS.Config.CanPlayersGivePoints then
 		local givebutton = vgui.Create('DButton', preview or self)
-		givebutton:SetText("Give "..PS.Config.PointsName)
+		givebutton:SetText("Поделится своими очками")
 		if PS.Config.DisplayPreviewInMenu then
 			givebutton:DockMargin(8, 8, 8, 8)
 		else
@@ -459,12 +460,12 @@ function PANEL:Paint(w, h)
 	surface.DrawRect(0, 0, w, 48)
 
 	if PS.Config.CommunityName then
-		draw.SimpleText(PS.Config.CommunityName .. " PointShop", 'PS_LargeTitle', 16, 8, color_white)
+		draw.SimpleText(PS.Config.CommunityName .. " PointShop", 'PS_LargeTitle', 16, 8, Color(0,0,0,255))
 	else
 		draw.SimpleText("PointShop", 'PS_LargeTitle', 16, 8, color_white)
 	end
 
-	draw.SimpleText('You have ' .. LocalPlayer():PS_GetPoints() .. ' ' .. PS.Config.PointsName, 'PS_Heading3', self:GetWide() - 40, 24, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+	draw.SimpleText('У вас есть ' .. LocalPlayer():PS_GetPoints() .. ' очков', 'PS_Heading3', self:GetWide() - 40, 24, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
 	
 end
 

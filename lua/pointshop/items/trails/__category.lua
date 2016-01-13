@@ -1,2 +1,2 @@
-CATEGORY.Name = 'Trails'
+CATEGORY.Name = 'Трейлы'
 CATEGORY.Icon = 'rainbow'

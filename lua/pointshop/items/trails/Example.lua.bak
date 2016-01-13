@@ -1,12 +1,14 @@
-ITEM.Name = 'Plasma Trail'
-ITEM.Price = 150
-ITEM.Material = 'trails/plasma.vmt'
+ITEM.Name = 'SAMPLE TEXT'
+ITEM.Price = 228
+ITEM.Material = 'model.vmt'
 
 function ITEM:OnEquip(ply, modifications)
+    if ply:Team() == TEAM_PROPS or ply:Team() == TEAM_UNASSIGNED or ply:Team() == TEAM_SPECTATOR then return end
 	ply.PlasmaTrail = util.SpriteTrail(ply, 0, modifications.color, false, 15, 1, 4, 0.125, self.Material)
 end
 
 function ITEM:OnHolster(ply)
+    if ply:Team() == TEAM_PROPS or ply:Team() == TEAM_UNASSIGNED or ply:Team() == TEAM_SPECTATOR then return end
 	SafeRemoveEntity(ply.PlasmaTrail)
 end
 
