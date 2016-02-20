@@ -1,4 +1,4 @@
-# E2Power
+# Pointshop
 Pointshop - это внутриигровой магазин для Garry's Mod.
 
 ## Документация (на английском)
